@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    <title>Hello, world!</title>
+</head>
+<body>
+    
+    <header class="container">
+        <h1>Transform Characters</h1>
+    </header>
+    
+    
+    <main class="container">
+        <p>Made to transform all of your text to avoid problems dealing with charsets like <strong>ISO-8859-1 😡</strong></p>
+        <p>Just select wich characters do you want to transform to "Numeric Code" or "Named Code" :</p>
+        <div class="d-flex flex-wrap">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="lowercase-a" value="á">
+                <label class="form-check-label" for="lowercase-a">á</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="uppercase-a" value="Á">
+                <label class="form-check-label" for="uppercase-a">Á</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="lowercase-e" value="é">
+                <label class="form-check-label" for="lowercase-e">é</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="uppercase-e" value="É">
+                <label class="form-check-label" for="uppercase-e">É</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="lowercase-i" value="í">
+                <label class="form-check-label" for="lowercase-i">í</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="uppercase-i" value="Í">
+                <label class="form-check-label" for="uppercase-i">Í</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="lowercase-o" value="ó">
+                <label class="form-check-label" for="lowercase-o">ó</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="uppercase-o" value="Ó">
+                <label class="form-check-label" for="uppercase-o">Ó</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="lowercase-u" value="ú">
+                <label class="form-check-label" for="lowercase-u">ú</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="uppercase-u" value="Ú">
+                <label class="form-check-label" for="uppercase-u">Ú</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="lowercase-n" value="ñ">
+                <label class="form-check-label" for="lowercase-n">ñ</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="uppercase-n" value="Ñ">
+                <label class="form-check-label" for="uppercase-n">Ñ</label>
+            </div>
+            
+            
+        </div>
+        
+        <div class="container">
+            <div class="row mt-4">
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <label for="initial-content">Paste your text here 👇</label>
+                        <textarea class="form-control" id="initial-content" rows="10"></textarea>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-lg-6">
+                    
+                    <div class="form-group">
+                        <label for="transformed-content">Example textarea</label>
+                        <textarea class="form-control" id="transformed-content" rows="10"></textarea>
+                    </div>
+                </div>
+                
+                <div class="col-12 d-flex justify-content-end">
+                    <button id="copy-button" type="button">Copiar</button>
+                </div>
+                
+                <div class="col-12">
+                    
+                    <button id="check-button" type="button">LEL</button>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
+    <script>
+        
+        const initial = document.getElementById('initial-content');
+        const transformed = document.getElementById('transformed-content');
+        const checkButton = document.getElementById('check-button');
+        const copyButton = document.getElementById('copy-button');
+        
+        
+        copyButton.addEventListener('click', copyClipboard);
+
+
+        checkButton.addEventListener('click', function(){
+            //Guardar todos los checkboxes marcados.
+            let checks = document.querySelectorAll('input[type="checkbox"]:checked');
+
+            //Definir array para guardar todos los caracteres que se transformaran     
+            let values = [];
+
+            //Definir array para guardar todos los valores que se reemplazaran
+            let namedCode = [];
+            
+            //Guardar en un array todos los checkboxes marcados
+            checks.forEach(function(check){
+                values.push(check.value);
+            });
+            console.log(values);
+            
+            //Crear una expresion regular con todos los valores que se deben reemplazar
+            let main_regex = new RegExp(`${values}`, 'g');
+            console.log(main_regex);
+            
+            
+            //Recorres el array de valores a reemplazar y guardar en otro array los valores por cuales se reemplazará cada uno
+            values.forEach(function(e){
+                if ( e === 'á'){
+                    namedCode.push('&aacute;'); 
+                } else if( e === 'Á'){
+                    namedCode.push('&Aacute;'); 
+                } else if( e === 'é'){
+                    namedCode.push('&eacute;'); 
+                } else if( e === 'É'){
+                    namedCode.push('&Eacute;'); 
+                } else if( e === 'í'){
+                    namedCode.push('&iacute;'); 
+                } else if( e === 'Í'){
+                    namedCode.push('&Iacute;'); 
+                } else if( e === 'ó'){
+                    namedCode.push('&oacute;'); 
+                } else if( e === 'Ó'){
+                    namedCode.push('&Oacute;'); 
+                } else if( e === 'ú'){
+                    namedCode.push('&uacute;'); 
+                } else if( e === 'Ú'){
+                    namedCode.push('&Uacute;'); 
+                } else if( e === 'ñ'){
+                    namedCode.push('&ntilde;'); 
+                } else if( e === 'Ñ'){
+                    namedCode.push('&Ntilde;'); 
+                }
+            });
+            
+            console.log(namedCode);
+            
+    
+            //Contenido del primer textarea
+            let initialContent = initial.value;
+
+            //Reemplazar el contenido con la expresión regular
+            let transformedContent = actualContent.replace(main_regex, `${namedCode}`);
+            
+            //Contenido del segundo textarea
+            transformed.value = transformedContent;
+            
+        });
+        
+        
+
+        //Copiar Resultado
+        function copyClipboard(){
+            let copyText = past.value;
+            console.log(copyText)
+            
+            past.select();
+            past.setSelectionRange(0, 99999);
+            
+            document.execCommand("copy");
+            
+            alert("Copied the text: " + copyText.value);
+        }
+        
+        
+        
+    </script>
+</body>
+</html>
