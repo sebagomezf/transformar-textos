@@ -19,60 +19,6 @@
     
     <main class="container">
         <p>Made to transform all of your text to avoid problems dealing with charsets like <strong>ISO-8859-1 😡</strong></p>
-        <p>Just select wich characters do you want to transform to "Numeric Code" or "Named Code" :</p>
-        <div class="d-flex flex-wrap">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="lowercase-a" value="á">
-                <label class="form-check-label" for="lowercase-a">á</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="uppercase-a" value="Á">
-                <label class="form-check-label" for="uppercase-a">Á</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="lowercase-e" value="é">
-                <label class="form-check-label" for="lowercase-e">é</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="uppercase-e" value="É">
-                <label class="form-check-label" for="uppercase-e">É</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="lowercase-i" value="í">
-                <label class="form-check-label" for="lowercase-i">í</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="uppercase-i" value="Í">
-                <label class="form-check-label" for="uppercase-i">Í</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="lowercase-o" value="ó">
-                <label class="form-check-label" for="lowercase-o">ó</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="uppercase-o" value="Ó">
-                <label class="form-check-label" for="uppercase-o">Ó</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="lowercase-u" value="ú">
-                <label class="form-check-label" for="lowercase-u">ú</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="uppercase-u" value="Ú">
-                <label class="form-check-label" for="uppercase-u">Ú</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="lowercase-n" value="ñ">
-                <label class="form-check-label" for="lowercase-n">ñ</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="uppercase-n" value="Ñ">
-                <label class="form-check-label" for="uppercase-n">Ñ</label>
-            </div>
-            
-            
-        </div>
-        
         <div class="container">
             <div class="row mt-4">
                 <div class="col-12 col-lg-6">
@@ -80,24 +26,21 @@
                         <label for="initial-content">Paste your text here 👇</label>
                         <textarea class="form-control" id="initial-content" rows="10"></textarea>
                     </div>
-                </div>
-                
-                <div class="col-12 col-lg-6">
                     
-                    <div class="form-group">
-                        <label for="transformed-content">Example textarea</label>
-                        <textarea class="form-control" id="transformed-content" rows="10"></textarea>
+                    <div class="d-flex justify-content-end">
+                        <button id="numeric-code-button" class="mr-2" type="button">Transform to Numeric Code</button>
+                        <button id="named-code-button" type="button">Transform to Named Code</button>
                     </div>
                 </div>
                 
-                <div class="col-12 d-flex justify-content-end">
-                    <button id="copy-button" type="button">Copiar</button>
-                </div>
-                
-                <div class="col-12">
-                    
-                    <button id="check-button" type="button">LEL</button>
-                    
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <label for="transformed-content">Result</label>
+                        <textarea class="form-control" id="transformed-content" rows="10"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button id="copy-button" type="button">Copy</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,90 +56,80 @@
         
         const initial = document.getElementById('initial-content');
         const transformed = document.getElementById('transformed-content');
-        const checkButton = document.getElementById('check-button');
+        const namedCodeButton = document.getElementById('named-code-button');
+        const numericCodeButton = document.getElementById('numeric-code-button');
         const copyButton = document.getElementById('copy-button');
         
         
+        
+        const namedCodes = {
+            á:"&aacute;",
+            Á:"&Aacute;",
+            é:"&eacute;",
+            É:"&Eacute;",
+            í:"&iacute;",
+            Í:"&Iacute;",
+            ó:"&oacute;",
+            Ó:"&Oacute;",
+            ú:"&uacute;",
+            Ú:"&Uacute;",
+            ñ:"&ntilde;",
+            Ñ:"&Ntilde;"
+        };
+        
+        
+        const numericCodes = {
+            á:"&#225;",
+            Á:"&#193;",
+            é:"&#233",
+            É:"&#201",
+            í:"&#237;",
+            Í:"&#205;",
+            ó:"&#243;",
+            Ó:"&#211;",
+            ú:"&#250;",
+            Ú:"&#218;",
+            ñ:"&#241;",
+            Ñ:"&#209;"
+        };
+
+        namedCodeButton.addEventListener('click', transformNamed);
+        numericCodeButton.addEventListener('click', transformNumeric);
+
+        function transformNumeric(){
+            let initialContent = initial.value;
+            let transformedContent = initialContent.replace(/á|Á|é|É|í|Í|ó|Ó|ú|Ú|ñ|Ñ/g, function(code){
+                return numericCodes[code];
+            });
+            transformed.value = transformedContent;
+        }
+
+        function transformNamed(){
+            let initialContent = initial.value;
+            let transformedContent = initialContent.replace(/á|Á|é|É|í|Í|ó|Ó|ú|Ú|ñ|Ñ/g, function(code){
+                return namedCodes[code];
+            });
+            transformed.value = transformedContent;
+        }
+        
+        
+
+
+
+        
+        //Copy
         copyButton.addEventListener('click', copyClipboard);
 
-
-        checkButton.addEventListener('click', function(){
-            //Guardar todos los checkboxes marcados.
-            let checks = document.querySelectorAll('input[type="checkbox"]:checked');
-
-            //Definir array para guardar todos los caracteres que se transformaran     
-            let values = [];
-
-            //Definir array para guardar todos los valores que se reemplazaran
-            let namedCode = [];
-            
-            //Guardar en un array todos los checkboxes marcados
-            checks.forEach(function(check){
-                values.push(check.value);
-            });
-            console.log(values);
-            
-            //Crear una expresion regular con todos los valores que se deben reemplazar
-            let main_regex = new RegExp(`${values}`, 'g');
-            console.log(main_regex);
-            
-            
-            //Recorres el array de valores a reemplazar y guardar en otro array los valores por cuales se reemplazará cada uno
-            values.forEach(function(e){
-                if ( e === 'á'){
-                    namedCode.push('&aacute;'); 
-                } else if( e === 'Á'){
-                    namedCode.push('&Aacute;'); 
-                } else if( e === 'é'){
-                    namedCode.push('&eacute;'); 
-                } else if( e === 'É'){
-                    namedCode.push('&Eacute;'); 
-                } else if( e === 'í'){
-                    namedCode.push('&iacute;'); 
-                } else if( e === 'Í'){
-                    namedCode.push('&Iacute;'); 
-                } else if( e === 'ó'){
-                    namedCode.push('&oacute;'); 
-                } else if( e === 'Ó'){
-                    namedCode.push('&Oacute;'); 
-                } else if( e === 'ú'){
-                    namedCode.push('&uacute;'); 
-                } else if( e === 'Ú'){
-                    namedCode.push('&Uacute;'); 
-                } else if( e === 'ñ'){
-                    namedCode.push('&ntilde;'); 
-                } else if( e === 'Ñ'){
-                    namedCode.push('&Ntilde;'); 
-                }
-            });
-            
-            console.log(namedCode);
-            
-    
-            //Contenido del primer textarea
-            let initialContent = initial.value;
-
-            //Reemplazar el contenido con la expresión regular
-            let transformedContent = initialContent.replace(main_regex, `${namedCode}`);
-            
-            //Contenido del segundo textarea
-            transformed.value = transformedContent;
-            
-        });
-        
-        
-
-        //Copiar Resultado
         function copyClipboard(){
-            let copyText = past.value;
+            let copyText = transformed.value;
             console.log(copyText)
             
-            past.select();
-            past.setSelectionRange(0, 99999);
+            transformed.select();
+            transformed.setSelectionRange(0, 99999);
             
             document.execCommand("copy");
             
-            alert("Copied the text: " + copyText.value);
+            alert("Text copied");
         }
         
         
