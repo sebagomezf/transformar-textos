@@ -7,133 +7,56 @@
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet"> 
+
+    <link rel="stylesheet" href="style.css">
     
-    <title>Hello, world!</title>
+    <title>Transformar Tildes y Ñ's</title>
 </head>
 <body>
     
-    <header class="container">
-        <h1>Transform Characters</h1>
+    <header>
+        <div class="wrapper">
+            <h1>Transformar Tildes y Ñ's</h1>
+        </div>
     </header>
     
-    
-    <main class="container">
-        <p>Made to transform all of your text to avoid problems dealing with charsets like <strong>ISO-8859-1 😡</strong></p>
-        <div class="container">
-            <div class="row mt-4">
-                <div class="col-12 col-lg-6">
-                    <div class="form-group">
-                        <label for="initial-content">Paste your text here 👇</label>
-                        <textarea class="form-control" id="initial-content" rows="10"></textarea>
-                    </div>
-                    
-                    <div class="d-flex justify-content-end">
-                        <button id="numeric-code-button" class="mr-2" type="button">Transform to Numeric Code</button>
-                        <button id="named-code-button" type="button">Transform to Named Code</button>
-                    </div>
+
+    <main class="wrapper mt-4">
+        <p class="lead">Hecho para transformar todas las vocales con tildes, junto con la letra ñ para no tener problemas con charsets como el  <strong>ISO-8859-1 😡</strong></p>
+        <p class="lead">Actualmente transformando: <strong>[á-ú]&nbsp;&nbsp;&nbsp;[Á-Ú]&nbsp;&nbsp;&nbsp;[ñ | Ñ]</strong></p>
+        <div class="row mt-4 px-0">
+            <div class="col-12 col-lg-6">
+                <div class="form-group">
+                    <label for="initial-content" class="mb-0 font-weight-bold text-uppercase">Pega tu código aquí 👇</label>
+                    <textarea class="form-control" id="initial-content" rows="10"></textarea>
                 </div>
                 
-                <div class="col-12 col-lg-6">
-                    <div class="form-group">
-                        <label for="transformed-content">Result</label>
-                        <textarea class="form-control" id="transformed-content" rows="10"></textarea>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button id="copy-button" type="button">Copy</button>
-                    </div>
+                <div class="d-flex justify-content-end">
+                    <button id="numeric-code-button" class="btn btn-secondary mr-2" type="button">Transformar a "Numeric Code"</button>
+                    <button id="named-code-button" class="btn btn-dark" type="button">Transformar a "Named Code"</button>
+                </div>
+            </div>
+            
+            <div class="col-12 col-lg-6 mt-5 mt-lg-0">
+                <div class="form-group">
+                    <label for="transformed-content" class="mb-0 font-weight-bold text-uppercase">Resultado</label>
+                    <textarea class="form-control text-area-right" id="transformed-content" rows="10"></textarea>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button id="copy-button" class="btn btn-info" type="button">Copiar</button>
                 </div>
             </div>
         </div>
     </main>
-    
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    
-    <script>
-        
-        const initial = document.getElementById('initial-content');
-        const transformed = document.getElementById('transformed-content');
-        const namedCodeButton = document.getElementById('named-code-button');
-        const numericCodeButton = document.getElementById('numeric-code-button');
-        const copyButton = document.getElementById('copy-button');
-        
-        
-        
-        const namedCodes = {
-            á:"&aacute;",
-            Á:"&Aacute;",
-            é:"&eacute;",
-            É:"&Eacute;",
-            í:"&iacute;",
-            Í:"&Iacute;",
-            ó:"&oacute;",
-            Ó:"&Oacute;",
-            ú:"&uacute;",
-            Ú:"&Uacute;",
-            ñ:"&ntilde;",
-            Ñ:"&Ntilde;"
-        };
-        
-        
-        const numericCodes = {
-            á:"&#225;",
-            Á:"&#193;",
-            é:"&#233",
-            É:"&#201",
-            í:"&#237;",
-            Í:"&#205;",
-            ó:"&#243;",
-            Ó:"&#211;",
-            ú:"&#250;",
-            Ú:"&#218;",
-            ñ:"&#241;",
-            Ñ:"&#209;"
-        };
-
-        namedCodeButton.addEventListener('click', transformNamed);
-        numericCodeButton.addEventListener('click', transformNumeric);
-
-        function transformNumeric(){
-            let initialContent = initial.value;
-            let transformedContent = initialContent.replace(/á|Á|é|É|í|Í|ó|Ó|ú|Ú|ñ|Ñ/g, function(code){
-                return numericCodes[code];
-            });
-            transformed.value = transformedContent;
-        }
-
-        function transformNamed(){
-            let initialContent = initial.value;
-            let transformedContent = initialContent.replace(/á|Á|é|É|í|Í|ó|Ó|ú|Ú|ñ|Ñ/g, function(code){
-                return namedCodes[code];
-            });
-            transformed.value = transformedContent;
-        }
-        
-        
-
-
-
-        
-        //Copy
-        copyButton.addEventListener('click', copyClipboard);
-
-        function copyClipboard(){
-            let copyText = transformed.value;
-            console.log(copyText)
-            
-            transformed.select();
-            transformed.setSelectionRange(0, 99999);
-            
-            document.execCommand("copy");
-            
-            alert("Text copied");
-        }
-        
-        
-        
-    </script>
+    <script src="transform.js"></script>
 </body>
 </html>
